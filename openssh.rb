@@ -8,6 +8,7 @@ class Openssh < Formula
   revision 1
 
   option 'with-keychain-support', 'Add native OS X Keychain and Launch Daemon support to ssh-agent'
+  option 'with-x509-support', 'Add OpenSSL x509 certificate support from Roumen Petrov'
 
   depends_on 'autoconf' => :build if build.with? 'keychain-support'
   depends_on 'openssl'
@@ -18,7 +19,12 @@ class Openssh < Formula
     url "https://gist.githubusercontent.com/Bluerise/9400603/raw/28b1cabcc468ce67a41b866eec03032d814a8c18/OpenSSH+6.6p1+keychain+support"
     sha1 "32e6527d7d70b3c0c9a6bd18ddd0b13ed939ea92"
   end if build.with? "keychain-support"
-
+  
+  patch do
+    url "http://roumenpetrov.info/openssh/x509-8.0/openssh-6.6p1+x509-8.0.diff.gz"
+    sha1 "007a3b71626333c29454f01f1f28c290cf734f10"
+  end if build.with? "x509-support"
+  
   def install
     system "autoreconf -i" if build.with? 'keychain-support'
 
